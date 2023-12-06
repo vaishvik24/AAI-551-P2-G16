@@ -105,10 +105,7 @@ class GameEngine:
         print("Good luck! \n")
 
     def printField(self):
-        # for row in self._field:
-        #     row_symbols = [cell._symbol if cell is not None else ' ' for cell in row]
-        #     print(" ".join(row_symbols))
-        # print()
+        #This will print the grid with positions of all the vegetables, rabbits and captain.
         cols = len(self._field[0])
         print('#' * (cols * 3 + 2))
         for row in self._field:
@@ -210,9 +207,9 @@ class GameEngine:
         else:
             print("You can't move that way! Move blocked.")
 
+    # Method to get the input from the user and based on that move the captain in that direction
     def moveCaptain(self):
         direction = input("Enter direction to move Captain (W/A/S/D): ").lower()
-
         if direction == 'w':
             self.moveCptVertical(-1)
         elif direction == 's':
