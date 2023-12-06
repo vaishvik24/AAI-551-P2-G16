@@ -1,4 +1,6 @@
-#Name: Kush Patel
+# Author: Kush Patel
+# Date: 09/03/2023
+# Description: simple program that creates a layout for Creature class
 
 from Creature import Creature  # Importing the Creature class
 
