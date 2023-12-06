@@ -128,4 +128,43 @@ class GameEngine:
     def getScore(self):
         return self._score
 
+    def moveRabbits(self):
+        for rabbit in self._rabbits:
+            current_row, current_col = rabbit.get_x(), rabbit.get_y()
+
+            # Calculate random movement direction
+            movement_row = random.choice([-1, 0, 1])
+            movement_col = random.choice([-1, 0, 1])
+
+            # Calculate the new position after movement
+            new_row, new_col = current_row + movement_row, current_col + movement_col
+
+            # Check if the new position is within the boundaries of the field
+            if 0 <= new_row < len(self._field) and 0 <= new_col < len(self._field[0]):
+                # Check if the new position is an empty slot
+                if self._field[new_row][new_col] is None:
+                    # Update Rabbit's variables
+                    rabbit.set_x(new_row)
+                    rabbit.set_y(new_col)
+                    # Assign Rabbit to the new location in the field
+                    self._field[new_row][new_col] = rabbit
+                    # Set the previous location in the field to None
+                    self._field[current_row][current_col] = None
+                else:
+                    # Check if the new position is occupied by a Captain object or another Rabbit object
+                    if isinstance(self._field[new_row][new_col], (Captain, Rabbit)):
+                        # Rabbit forfeits its move
+                        pass
+                    # Check if the new position is occupied by a Veggie object
+                    elif isinstance(self._field[new_row][new_col], Veggie):
+                        # Remove the Veggie object from the field
+                        self._field[current_row][current_col] = None
+                        # Rabbit takes the place of the Veggie in the field
+                        self._field[new_row][new_col] = rabbit
+                        # Update Rabbit's variables
+                        rabbit.set_x(new_row)
+                        rabbit.set_y(new_col)
+                        # Set the previous location in the field to None
+                        self._field[current_row][current_col] = None
+
   
