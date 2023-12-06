@@ -7,7 +7,7 @@ using moveRabbits and moveCaptain funtions. It also displays the when game is ov
 end. 
 """
 
-from GE import GameEngine
+from GameEngine import GameEngine
 
 def main():
     
