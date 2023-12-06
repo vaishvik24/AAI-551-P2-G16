@@ -1,5 +1,5 @@
 """
-Author: Hemil Patel (20013017)
+Author: Hemil Patel (20013017), Kush Patel (20011282)
 Date: 5th dec 2023
 Description: This is the main file where all the funtions are defined to read the csv file, move the captain 
 vertically and horizontally, method to move the rabbit in any direction by one space, calculate the 
@@ -167,4 +167,65 @@ class GameEngine:
                         # Set the previous location in the field to None
                         self._field[current_row][current_col] = None
 
-  
+                           
+    def moveCptVertical(self, movement):
+        current_x, current_y = self._captain.get_x(), self._captain.get_y()
+        new_x = current_x + movement
+
+        if 0 <= new_x < len(self._field) and self._field[new_x][current_y] is None:
+            # Move successful
+            self._field[new_x][current_y] = self._captain
+            self._field[current_x][current_y] = None
+            self._captain.set_x(new_x)
+        elif 0 <= new_x < len(self._field) and isinstance(self._field[new_x][current_y], Veggie):
+            # Veggie found
+            veggie = self._field[new_x][current_y]
+            self._captain.add_veggie(veggie)
+            self._score += veggie.get_points()
+            print(f"Captain found a delicious vegetable: {veggie.get_name()} worth {veggie.get_points()} points!")
+            self._field[new_x][current_y] = self._captain
+            self._field[current_x][current_y] = None
+            self._captain.set_x(new_x)
+        elif 0 <= new_x < len(self._field) and isinstance(self._field[new_x][current_y], Rabbit):
+            print("Don't step on the bunnies! Move blocked.")
+        else:
+            print("You can't move that way! Move blocked.")
+
+
+    def moveCptHorizontal(self, movement):
+        current_x, current_y = self._captain.get_x(), self._captain.get_y()
+        new_y = current_y + movement
+
+        if 0 <= new_y < len(self._field[0]) and self._field[current_x][new_y] is None:
+            # Move successful
+            self._field[current_x][new_y] = self._captain
+            self._field[current_x][current_y] = None
+            self._captain.set_y(new_y)
+        elif 0 <= new_y < len(self._field[0]) and isinstance(self._field[current_x][new_y], Veggie):
+            # Veggie found
+            veggie = self._field[current_x][new_y]
+            self._captain.add_veggie(veggie)
+            self._score += veggie.get_points()
+            print(f"Captain found a delicious vegetable: {veggie.get_name()} worth {veggie.get_points()} points!")
+            self._field[current_x][new_y] = self._captain
+            self._field[current_x][current_y] = None
+            self._captain.set_y(new_y)
+        elif 0 <= new_y < len(self._field[0]) and isinstance(self._field[current_x][new_y], Rabbit):
+            print("Don't step on the bunnies! Move blocked.")
+        else:
+            print("You can't move that way! Move blocked.")
+
+
+    def moveCaptain(self):
+        direction = input("Enter direction to move Captain (W/A/S/D): ").lower()
+
+        if direction == 'w':
+            self.moveCptVertical(-1)
+        elif direction == 's':
+            self.moveCptVertical(1)
+        elif direction == 'a':
+            self.moveCptHorizontal(-1)
+        elif direction == 'd':
+            self.moveCptHorizontal(1)
+        else:
+            print("Invalid input. Please enter W, A, S, or D.")
