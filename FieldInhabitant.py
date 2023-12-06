@@ -1,12 +1,13 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Dec  3 19:19:30 2023
-
-@author: hemil
-"""
+# Author: Vaishvik Brahmbhatt
+# Date: 12/05/2023
+# Description: A base class FieldInhabitant that is imported by all the classes in the project
 
 class FieldInhabitant:
     def __init__(self, symbol):
+        """
+        Initialize the class with the given symbol
+        :param symbol: Char: symbol of the instance
+        """
         self._symbol = symbol
 
     def get_symbol(self):

@@ -1,14 +1,18 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Dec  3 19:23:17 2023
-
-@author: hemil
-"""
+# Author: Vaishvik Brahmbhatt
+# Date: 12/05/2023
+# Description: A Creature class that contains its position and its symbol
 
 from FieldInhabitant import FieldInhabitant
 
+
 class Creature(FieldInhabitant):
     def __init__(self, x, y, symbol):
+        """
+        Initialize the co-ordinate for creature with given symbol
+        :param x: int: x axis position
+        :param y: int: y axis position
+        :param symbol: Char: type of symbol
+        """
         super().__init__(symbol)
         self._x = x
         self._y = y
