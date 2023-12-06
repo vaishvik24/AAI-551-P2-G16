@@ -1,5 +1,5 @@
 """
-Author: Hemil Patel (20013017), Kush Patel (20011282)
+Author: Hemil Patel (20013017), Kush Patel (20011282), Vaishvik Brahmbhatt (20011389)
 Date: 5th dec 2023
 Description: This is the main file where all the funtions are defined to read the csv file, move the captain 
 vertically and horizontally, method to move the rabbit in any direction by one space, calculate the 
@@ -11,14 +11,14 @@ import pickle
 from Veggie import Veggie
 from Captain import Captain
 from Rabbit import Rabbit
-from Snake import Snake
 import os
+
 
 class GameEngine:
     NUMBEROFVEGGIES = 30
     NUMBEROFRABBITS = 5
-    HIGHSCOREFILE = "highscore.data" #This file will store the highscore data
-    
+    # This file will store the highscore data
+    HIGHSCOREFILE = "highscore.data"
 
     def __init__(self):
         self._field = []
@@ -26,32 +26,30 @@ class GameEngine:
         self._captain = None
         self._veggies = []
         self._score = 0
-        
-        
+
     def initVeggies(self):
         # To check if the input is a valid file
         filename = input("Please enter the name of the vegetable point file: ")
         while not os.path.exists(filename):
             print("File not found. Please enter a valid filename.")
             filename = input("Please enter the name of the vegetable point file: ")
-        
+
         # Reads the first line and gets the dimensions from the csv file
         with open(filename, 'r') as file:
             var1, var2 = file.readline().split()
-            x,height,width = var2.split(',')
+            x, height, width = var2.split(',')
             height = int(height)
             width = int(width)
             self._field = [[None for _ in range(width)] for _ in range(height)]
-            
-            
+
             # Read remaining lines to create Veggie objects and populate the field
             for line in file:
                 veggie_data = line.strip().split(',')
                 veggie = Veggie(veggie_data[0], veggie_data[1], int(veggie_data[2]))
                 self._veggies.append(veggie)
-                
-            inserted_veggies=0    
-            #Place veggie in a random location
+
+            inserted_veggies = 0
+            # Place veggie in a random location
             while inserted_veggies < self.NUMBEROFVEGGIES:
                 x, y = random.randint(0, height - 1), random.randint(0, width - 1)
                 if self._field[x][y] is None:
@@ -94,7 +92,6 @@ class GameEngine:
                     count += 1
         return count
 
-                        
     def intro(self):
         print("Welcome to Captain Veggie! \n")
         print("The rabbits have invaded your garden and you must harvest as many vegetables as possible before the "
@@ -113,7 +110,7 @@ class GameEngine:
         #     print(" ".join(row_symbols))
         # print()
         cols = len(self._field[0])
-        print('#' * (cols*3 + 2))
+        print('#' * (cols * 3 + 2))
         for row in self._field:
             row_str = "#"
             for cell in row:
@@ -123,7 +120,7 @@ class GameEngine:
                     row_str += "   "
             row_str += "#"
             print(row_str)
-        print('#' * (cols*3 + 2))
+        print('#' * (cols * 3 + 2))
 
     def getScore(self):
         return self._score
@@ -167,7 +164,6 @@ class GameEngine:
                         # Set the previous location in the field to None
                         self._field[current_row][current_col] = None
 
-                           
     def moveCptVertical(self, movement):
         current_x, current_y = self._captain.get_x(), self._captain.get_y()
         new_x = current_x + movement
@@ -190,7 +186,6 @@ class GameEngine:
             print("Don't step on the bunnies! Move blocked.")
         else:
             print("You can't move that way! Move blocked.")
-
 
     def moveCptHorizontal(self, movement):
         current_x, current_y = self._captain.get_x(), self._captain.get_y()
@@ -215,7 +210,6 @@ class GameEngine:
         else:
             print("You can't move that way! Move blocked.")
 
-
     def moveCaptain(self):
         direction = input("Enter direction to move Captain (W/A/S/D): ").lower()
 
@@ -229,3 +223,59 @@ class GameEngine:
             self.moveCptHorizontal(1)
         else:
             print("Invalid input. Please enter W, A, S, or D.")
+
+
+def gameOver(self):
+    print("Game Over!")
+    print("Vegetables harvested by Captain:")
+    for veggie in self._captain.get_veggies_collected():
+        print(veggie.get_name())
+    print("Final Score:", self._score)
+
+
+def highScore(self):
+    # Declare an empty List to store Tuples representing player initials and their score
+    high_scores = []
+
+    # Check if the highscore.data file exists
+    if os.path.exists(self.HIGHSCOREFILE):
+        # Open the file for binary reading
+        with open(self.HIGHSCOREFILE, 'rb') as file:
+            # Unpickle the file into the List of high scores
+            high_scores = pickle.load(file)
+
+    # Prompt the user for their initials and extract the first 3 characters
+    player_initials = input("Enter your initials (3 characters): ").upper()[:3]
+
+    # Create a Tuple with the player’s initials and score
+    player_score = self.getScore()
+    player_tuple = (player_initials, player_score)
+
+    # Add the player's Tuple to the List of high scores
+    if not high_scores:
+        high_scores.append(player_tuple)
+    else:
+        # Add the player's Tuple to the correct position in the List
+        inserted = False
+        for i, (initials, score) in enumerate(high_scores):
+            if player_score > score:
+                high_scores.insert(i, player_tuple)
+                inserted = True
+                break
+
+        # If the player's score is not greater than any existing scores, append it to the end
+        if not inserted:
+            high_scores.append(player_tuple)
+
+    # Output all the high scores in the List, with an appropriate header
+    print("\nHigh Scores:")
+    for i, (initials, score) in enumerate(high_scores):
+        print(f"{i + 1}. {initials}: {score}")
+
+    # Open the highscore.data file for binary writing
+    with open(self.HIGHSCOREFILE, 'wb') as file:
+        # Pickle the List of high scores to the file
+        pickle.dump(high_scores, file)
+
+    # Close the file
+    file.close()

@@ -4,6 +4,7 @@
 
 from FieldInhabitant import FieldInhabitant  # Importing necessary module
 
+
 class Veggie(FieldInhabitant):  # Defining a class named Veggie, inheriting from FieldInhabitant
     def __init__(self, name, symbol, points):  # Initializing the Veggie class with parameters
         super().__init__(symbol)  # Calling the constructor of the superclass FieldInhabitant

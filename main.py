@@ -9,8 +9,8 @@ end.
 
 from GameEngine import GameEngine
 
+
 def main():
-    
     # Instantiate and store a GameEngine object
     game_engine = GameEngine()
 
@@ -45,6 +45,7 @@ def main():
 
     # Handle the High Score functionality
     game_engine.highScore()
+
 
 if __name__ == "__main__":
     main()

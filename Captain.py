@@ -8,6 +8,7 @@ of veggie objects.
 
 from Creature import Creature
 
+
 class Captain(Creature):
     def __init__(self, x, y):
         super().__init__(x, y, "V")
