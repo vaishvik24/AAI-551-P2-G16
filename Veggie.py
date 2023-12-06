@@ -1,4 +1,6 @@
-#Name: Kush Patel
+# Author: Kush Patel
+# Date: 09/03/2023
+# Description: simple program that creates a layout for Veggie class
 
 from FieldInhabitant import FieldInhabitant  # Importing necessary module
 
