@@ -11,39 +11,36 @@ from GameEngine import GameEngine
 
 
 def main():
-    # Instantiate and store a GameEngine object
+    # init GameEngine object
     game_engine = GameEngine()
 
-    # Initialize the game
+    # starts game
     game_engine.initializeGame()
 
-    # Display the game’s introduction
+    # prints intro msg
     game_engine.intro()
 
-    # Create a variable to store the number of remaining vegetables
+    # fetches remaining veggies in the current field stage
     remaining_veggies = game_engine.remainingVeggies()
 
-    # Main game loop
     while remaining_veggies > 0:
-        # Output the number of remaining vegetables and the player’s score
+        # prints current state
         print(f"Remaining Vegetables: {remaining_veggies} | Score: {game_engine.getScore()}")
-
-        # Print out the field
         game_engine.printField()
 
-        # Move the rabbits
+        # move rabbits
         game_engine.moveRabbits()
 
-        # Move the captain
+        # move captain as per user commnad
         game_engine.moveCaptain()
 
-        # Determine the new number of remaining vegetables
+        # updates new veggies after changes
         remaining_veggies = game_engine.remainingVeggies()
 
-    # Display the Game Over information
+    # terminate the game and display final o/p
     game_engine.gameOver()
 
-    # Handle the High Score functionality
+    # prints out data result file
     game_engine.highScore()
 
 

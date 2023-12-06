@@ -15,6 +15,10 @@ import os
 
 
 class GameEngine:
+    """
+    Read CSV from input file, process as per users commands and prints out result
+    """
+    # global constants variable
     NUMBEROFVEGGIES = 30
     NUMBEROFRABBITS = 5
     # This file will store the highscore data
@@ -28,6 +32,10 @@ class GameEngine:
         self._score = 0
 
     def initVeggies(self):
+        """
+        Read file and init veggie and its values
+        :return: None
+        """
         # To check if the input is a valid file
         filename = input("Please enter the name of the vegetable point file: ")
         while not os.path.exists(filename):
@@ -58,8 +66,11 @@ class GameEngine:
         # Close the file
         file.close()
 
-    # Method to initialize captain at some random coordinate        
     def initCaptain(self):
+        """
+        initialize captain at some random coordinate
+        :return: None
+        """
         while True:
             x, y = random.randint(0, len(self._field) - 1), random.randint(0, len(self._field[0]) - 1)
             if self._field[x][y] is None:
@@ -68,6 +79,10 @@ class GameEngine:
                 break
 
     def initRabbits(self):
+        """
+        initialize rabbits at some random coordinate
+        :return: None
+        """
         height, width = len(self._field), len(self._field[0])
 
         for _ in range(self.NUMBEROFRABBITS):
@@ -80,11 +95,19 @@ class GameEngine:
                     break
 
     def initializeGame(self):
+        """
+        initialize all variables
+        :return: None
+        """
         self.initVeggies()
         self.initCaptain()
         self.initRabbits()
 
     def remainingVeggies(self):
+        """
+        Iterates through the field metrics and counts the remaining veggies
+        :return: int: remaining veggies
+        """
         count = 0
         for row in self._field:
             for cell in row:
@@ -93,6 +116,10 @@ class GameEngine:
         return count
 
     def intro(self):
+        """
+        Logs init msg to welcome user
+        :return: None
+        """
         print("Welcome to Captain Veggie! \n")
         print("The rabbits have invaded your garden and you must harvest as many vegetables as possible before the "
               "rabbits eat them all! Each vegetable is worth a different number of points so go for the high score! "
@@ -105,7 +132,10 @@ class GameEngine:
         print("Good luck! \n")
 
     def printField(self):
-        #This will print the grid with positions of all the vegetables, rabbits and captain.
+        """
+        print the grid with positions of all the vegetables, rabbits and captain.
+        :return: None
+        """
         cols = len(self._field[0])
         print('#' * (cols * 3 + 2))
         for row in self._field:
@@ -120,9 +150,17 @@ class GameEngine:
         print('#' * (cols * 3 + 2))
 
     def getScore(self):
+        """
+        Returns current score
+        :return: int: score of a user
+        """
         return self._score
 
     def moveRabbits(self):
+        """
+        Randomly moves rabbits positions
+        :return: None
+        """
         for rabbit in self._rabbits:
             current_row, current_col = rabbit.get_x(), rabbit.get_y()
 
@@ -162,6 +200,11 @@ class GameEngine:
                         self._field[current_row][current_col] = None
 
     def moveCptVertical(self, movement):
+        """
+        Move caption vertically
+        :param movement: int: movement direction
+        :return: None
+        """
         current_x, current_y = self._captain.get_x(), self._captain.get_y()
         new_x = current_x + movement
 
@@ -185,6 +228,11 @@ class GameEngine:
             print("You can't move that way! Move blocked.")
 
     def moveCptHorizontal(self, movement):
+        """
+        Move caption horizontally
+        :param movement: int: movement direction
+        :return: None
+        """
         current_x, current_y = self._captain.get_x(), self._captain.get_y()
         new_y = current_y + movement
 
@@ -209,6 +257,10 @@ class GameEngine:
 
     # Method to get the input from the user and based on that move the captain in that direction
     def moveCaptain(self):
+        """
+        Moves captain as per user input
+        :return: None
+        """
         direction = input("Enter direction to move Captain (W/A/S/D): ").lower()
         if direction == 'w':
             self.moveCptVertical(-1)
@@ -221,17 +273,24 @@ class GameEngine:
         else:
             print("Invalid input. Please enter W, A, S, or D.")
 
-
     def gameOver(self):
+        """
+        Terminates the game and prints out the final result
+        :return: None
+        """
         print("Game Over!")
         print("Vegetables harvested by Captain:")
         for veggie in self._captain.get_veggies_collected():
             print(veggie.get_name())
         print("Final Score:", self._score)
 
-
     def highScore(self):
-        # Declare an empty List to store Tuples representing player initials and their score
+        """
+        Reads/writes on data file and prints out the overall result in descending order
+        Declare an empty List to store Tuples representing player initials and their score
+        :return: None
+        """
+        #
         high_scores = []
 
         # Check if the highscore.data file exists
