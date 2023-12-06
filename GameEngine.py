@@ -225,57 +225,57 @@ class GameEngine:
             print("Invalid input. Please enter W, A, S, or D.")
 
 
-def gameOver(self):
-    print("Game Over!")
-    print("Vegetables harvested by Captain:")
-    for veggie in self._captain.get_veggies_collected():
-        print(veggie.get_name())
-    print("Final Score:", self._score)
+    def gameOver(self):
+        print("Game Over!")
+        print("Vegetables harvested by Captain:")
+        for veggie in self._captain.get_veggies_collected():
+            print(veggie.get_name())
+        print("Final Score:", self._score)
 
 
-def highScore(self):
-    # Declare an empty List to store Tuples representing player initials and their score
-    high_scores = []
+    def highScore(self):
+        # Declare an empty List to store Tuples representing player initials and their score
+        high_scores = []
 
-    # Check if the highscore.data file exists
-    if os.path.exists(self.HIGHSCOREFILE):
-        # Open the file for binary reading
-        with open(self.HIGHSCOREFILE, 'rb') as file:
-            # Unpickle the file into the List of high scores
-            high_scores = pickle.load(file)
+        # Check if the highscore.data file exists
+        if os.path.exists(self.HIGHSCOREFILE):
+            # Open the file for binary reading
+            with open(self.HIGHSCOREFILE, 'rb') as file:
+                # Unpickle the file into the List of high scores
+                high_scores = pickle.load(file)
 
-    # Prompt the user for their initials and extract the first 3 characters
-    player_initials = input("Enter your initials (3 characters): ").upper()[:3]
+        # Prompt the user for their initials and extract the first 3 characters
+        player_initials = input("Enter your initials (3 characters): ").upper()[:3]
 
-    # Create a Tuple with the player’s initials and score
-    player_score = self.getScore()
-    player_tuple = (player_initials, player_score)
+        # Create a Tuple with the player’s initials and score
+        player_score = self.getScore()
+        player_tuple = (player_initials, player_score)
 
-    # Add the player's Tuple to the List of high scores
-    if not high_scores:
-        high_scores.append(player_tuple)
-    else:
-        # Add the player's Tuple to the correct position in the List
-        inserted = False
-        for i, (initials, score) in enumerate(high_scores):
-            if player_score > score:
-                high_scores.insert(i, player_tuple)
-                inserted = True
-                break
-
-        # If the player's score is not greater than any existing scores, append it to the end
-        if not inserted:
+        # Add the player's Tuple to the List of high scores
+        if not high_scores:
             high_scores.append(player_tuple)
+        else:
+            # Add the player's Tuple to the correct position in the List
+            inserted = False
+            for i, (initials, score) in enumerate(high_scores):
+                if player_score > score:
+                    high_scores.insert(i, player_tuple)
+                    inserted = True
+                    break
 
-    # Output all the high scores in the List, with an appropriate header
-    print("\nHigh Scores:")
-    for i, (initials, score) in enumerate(high_scores):
-        print(f"{i + 1}. {initials}: {score}")
+            # If the player's score is not greater than any existing scores, append it to the end
+            if not inserted:
+                high_scores.append(player_tuple)
 
-    # Open the highscore.data file for binary writing
-    with open(self.HIGHSCOREFILE, 'wb') as file:
-        # Pickle the List of high scores to the file
-        pickle.dump(high_scores, file)
+        # Output all the high scores in the List, with an appropriate header
+        print("\nHigh Scores:")
+        for i, (initials, score) in enumerate(high_scores):
+            print(f"{i + 1}. {initials}: {score}")
 
-    # Close the file
-    file.close()
+        # Open the highscore.data file for binary writing
+        with open(self.HIGHSCOREFILE, 'wb') as file:
+            # Pickle the List of high scores to the file
+            pickle.dump(high_scores, file)
+
+        # Close the file
+        file.close()
